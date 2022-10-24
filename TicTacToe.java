@@ -27,6 +27,7 @@ public class TicTacToe {
 
                     System.out.println("\n=================================================\n");
                     gb.print();
+                    System.out.println(gb.evaluate());
                     //player turn
                     System.out.println("\nPlayer " + player + "'s turn!");
                     //row
@@ -37,8 +38,13 @@ public class TicTacToe {
                     col = input.nextInt();
 
                     if (gb.tryPlacePiece(player, row, col)){
+                        //gb.checkDraw();
                         if (gb.checkWin()){
                             System.out.println("Player " + player + " wins!");
+                            break;
+                        }
+                        else if (gb.checkDraw()){
+                            System.out.println("Draw!!");
                             break;
                         }
                         turn++;

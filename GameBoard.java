@@ -28,8 +28,25 @@ public class GameBoard {
         return true;
     }
 
+    public boolean checkDraw() {
+        int count = 0;
+        if (!checkWin()){
+            for (char[] square : gameBoard){
+                for (char s : square){
+                    if (s == EMPTY){
+                        count++;
+                    }
+                }
+            }
+            System.out.println(count);
+            return false;
+        }
+        return true;
+    }
+
     public boolean checkWin() {
         //Checks if there is a winner in the current state
+        //If there were more variable (X, O, etc.) I would have passed them through as arguments instead to avoid copying the same solution over and over. However since there are only two this way is okay too.
         boolean win = false;
 
         /* ===== win state for X ===== */
@@ -170,8 +187,193 @@ public class GameBoard {
     public int evaluate() {
         //Returns higher numbers if player 1 is at an advantage
         //or lower numbers if player 2 is at an advantage
-        //...
-        return 0;
+        int x1 = 0;
+        int x2 = 0;
+        int o1 = 0;
+        int o2 = 0;
+
+        /* ===== evaluation for X ===== */
+        
+        //first diagonal
+        int count = 0;
+        int col = 0;
+        for (int i = 0; i < gameBoard.length; i++){
+            if (gameBoard[i][col] != X){
+                if (gameBoard[i][col] == O){
+                    count = 0;
+                    break;
+                }
+            }
+            if (gameBoard[i][col] == X){
+                count++;
+            }
+            col++;
+        }
+        if (count == 1){
+            x1++;
+        }
+        else if (count == 2){
+            x2++;
+        }
+
+        //second diagonal
+        count = 0;
+        col = 0;
+        for (int j = gameBoard.length - 1; j >= 0; j--){
+            if (gameBoard[j][col] != X){
+                if (gameBoard[j][col] == O){
+                    count = 0;
+                    break;
+                }
+            }
+            if (gameBoard[j][col] == X){
+                count++;
+            }
+            col++;
+        }
+        if (count == 1){
+            x1++;
+        }
+        else if (count == 2){
+            x2++;
+        }
+
+        //rows
+        for (int i = 0; i < gameBoard.length; i ++){
+            count = 0;
+            for (int j = 0; j < gameBoard[0].length; j++){
+                if (gameBoard[i][j] != X){
+                    if (gameBoard[i][j] == O){
+                        count = 0;
+                        break;
+                    }
+                }
+                if (gameBoard[i][j] == X){
+                    count++;
+                }
+            }
+            if (count == 1){
+                x1++;
+            }
+            else if (count == 2){
+                x2++;
+            }
+        }
+
+        //columns
+        for (int i = 0; i < gameBoard.length; i ++){
+            count = 0;
+            for (int j = 0; j < gameBoard[0].length; j++){
+                if (gameBoard[j][i] != X){
+                    if (gameBoard[j][i] == O){
+                        count = 0;
+                        break;
+                    }
+                }
+                if (gameBoard[j][i] == X){
+                    count++;
+                }
+            }
+            if (count == 1){
+                x1++;
+            }
+            else if (count == 2){
+                x2++;
+            }
+        }
+
+        /* ===== win state for O ===== */
+        
+        //first diagonal
+        count = 0;
+        col = 0;
+        for (int i = 0; i < gameBoard.length; i++){
+            if (gameBoard[i][col] != O){
+                if (gameBoard[i][col] == X){
+                    count = 0;
+                    break;
+                }
+            }
+            if (gameBoard[i][col] == O){
+                count++;
+            }
+            col++;
+        }
+        if (count == 1){
+            o1++;
+        }
+        else if (count == 2){
+            o2++;
+        }
+
+        //second diagonal
+        count = 0;
+        col = 0;
+        for (int j = gameBoard.length - 1; j >= 0; j--){
+            if (gameBoard[j][col] != O){
+                if (gameBoard[j][col] == X){
+                    count = 0;
+                    break;
+                }
+            }
+            if (gameBoard[j][col] == O){
+                count++;
+            }
+            col++;
+        }
+        if (count == 1){
+            o1++;
+        }
+        else if (count == 2){
+            o2++;
+        }
+
+        //rows
+        for (int i = 0; i < gameBoard.length; i ++){
+            count = 0;
+            for (int j = 0; j < gameBoard[0].length; j++){
+                if (gameBoard[i][j] != O){
+                    if (gameBoard[i][j] == X){
+                        count = 0;
+                        break;
+                    }
+                }
+                if (gameBoard[i][j] == O){
+                    count++;
+                }
+            }
+            if (count == 1){
+                o1++;
+            }
+            else if (count == 2){
+                o2++;
+            }
+        }
+
+        //columns
+        for (int i = 0; i < gameBoard.length; i ++){
+            count = 0;
+            for (int j = 0; j < gameBoard[0].length; j++){
+                if (gameBoard[j][i] != O){
+                    if (gameBoard[j][i] == X){
+                        count = 0;
+                        break;
+                    }
+                }
+                if (gameBoard[j][i] == O){
+                    count++;
+                }
+            }
+            if (count == 1){
+                o1++;
+            }
+            else if (count == 2){
+                o2++;
+            }
+        }
+
+        //heuristic
+        return (3*x2) + x1 - ((3*o2) + o1);
     }
 
     public void print(){
